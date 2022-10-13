@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog id="idSelectTaskDialog" noDataText="{i18n>NoTaskLsit}" title="{i18n>SelectTask}" search=".onSearchTask"
+		confirm=".onValueHelpDialogClose" cancel=".onValueHelpDialogClose" showClearButton="true"
+		items="{TaskModel>/}">
+		<StandardListItem title="{TaskModel>subject}" description="{TaskModel>taskId}" iconDensityAware="false" iconInset="false" type="Active"/>
+	</SelectDialog>
+</core:FragmentDefinition>

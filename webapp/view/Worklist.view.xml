@@ -1,0 +1,108 @@
+<mvc:View controllerName="rnv.teamplan.controller.Worklist" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic"
+	xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:f="sap.f">
+	<f:DynamicPage id="masterPage" headerExpanded="{/headerExpanded}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>Teamplan}"/>
+				</f:heading>
+				<f:content>
+					<!--<GenericTag text="Rapor" status="Error" press="onPressOpenPopover" design="StatusIconHidden">-->
+					<!--	<ObjectNumber number="78" unit="%" emphasized="false" state="Error"/>-->
+					<!--</GenericTag>-->
+				</f:content>
+				<f:actions>
+					<ToolbarSpacer/>
+					<Button icon="sap-icon://donut-chart" text="{i18n>teamplanReport}" press="onShowReport" type="Transparent" visible="{Authorization>/Report}"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterbar" clear="onClear" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+						<fb:filterItems>
+							<fb:FilterItem name="I" label="{i18n>Personnel}">
+								<fb:control>
+									<MultiComboBox id="mCBoxPersonnel" items="{ path: 'PersonnelModel>/', length: 5000, sorter: { path: 'licensePlate' }}"
+										selectionFinish="onSearch">
+										<core:Item key="{PersonnelModel>persId}" text="{PersonnelModel>nameFirst} {PersonnelModel>nameLast}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="J" label="{i18n>Project}">
+								<fb:control>
+									<MultiComboBox id="mCBoxProject" items="{ path: 'ProjectModel>/', length: 5000, sorter: { path: 'licensePlate' }}"
+										selectionFinish="onSearch">
+										<core:Item key="{ProjectModel>projId}" text="{ProjectModel>projName}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<!--<fb:FilterItem name="E" label="{i18n>Expertise}">-->
+							<!--	<fb:control>-->
+							<!--		<MultiComboBox id="mCBoxExpertise" items="{ path: 'ExpertiseModel>/', length: 5000, sorter: { path: 'expertiseText' }}"-->
+							<!--			selectionFinish="onSearch">-->
+							<!--			<core:Item key="{ExpertiseModel>expertiseId}" text="{ExpertiseModel>expertiseText}"/>-->
+							<!--		</MultiComboBox>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterItem>-->
+							<fb:FilterItem name="T" label="{i18n>Team}">
+								<fb:control>
+									<MultiComboBox id="mCBoxTeam" items="{ path: 'TeamModel>/', length: 5000, sorter: { path: 'teamText' }}"
+										selectionFinish="onSearch">
+										<core:Item key="{TeamModel>teamKey}" text="{TeamModel>teamText}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="L" label="{i18n>Location}">
+								<fb:control>
+									<MultiComboBox id="mCBoxLocation" items="{ path: 'LocationModel>/', length: 5000, sorter: { path: 'licensePlate' }}"
+										selectionFinish="onSearch">
+										<core:Item key="{LocationModel>locationId}" text="{LocationModel>locationText}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="F" label="{i18n>showOnlyWithFreeDays}">
+								<fb:control>
+									<CheckBox id="cBoxShowOnlyWithFreeDays" text="{i18n>yes}" valueState="Warning" select="onSearch"/>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<PlanningCalendar id="PC1" showIntervalHeaders="false" startDate="{path: 'PlanningModel>/startDate'}"
+				rows="{ path: 'PlanningModel>/people', length: 5000, sorter: { path: 'licensePlate' }}" appointmentsVisualization="Filled" viewKey="Week"
+				showDayNamesLine="true" showWeekNumbers="true" stickyHeader="true" appointmentSelect="onAppointmentSelect"
+				intervalSelect="onAppointmentAddWithContext" showEmptyIntervalHeaders="true" viewChange="onViewChange" startDateChange="onStartDateChange"
+				groupAppointmentsMode="Expanded" class="sapUiSmallMarginTop">
+				<toolbarContent>
+					<SegmentedButton id="sButtonViewType" selectedKey="all" selectionChange="onSearch">
+						<items>
+							<SegmentedButtonItem text="{i18n>OwnPlan}" key="own"/>
+							<SegmentedButtonItem text="{i18n>TeamPlan}" key="team" visible="{Authorization>/TeamLead}"/>
+							<SegmentedButtonItem text="{i18n>AllPlan}" key="all"/>
+						</items>
+					</SegmentedButton>
+					<Button id="excelButton" icon="sap-icon://excel-attachment" press="onExport" tooltip="Excel" type="Transparent"/>
+				</toolbarContent>
+				<rows>
+					<PlanningCalendarRow icon="{PlanningModel>pic}" title="{PlanningModel>name}" text="{PlanningModel>TeamText}"
+						nonWorkingDays="{PlanningModel>freeDays}" nonWorkingHours="{freeHours}"
+						appointments="{path : 'PlanningModel>appointments', templateShareable: false}" intervalHeaders="{path: 'headers', templateShareable: false}">
+						<appointments>
+							<unified:CalendarAppointment startDate="{PlanningModel>displayStart}" endDate="{PlanningModel>displayEnd}" icon="{PlanningModel>pic}"
+								title="{PlanningModel>ProjName}" text="{PlanningModel>LocationText}-{PlanningModel>Description}" color="{PlanningModel>ProjectColor}"></unified:CalendarAppointment>
+						</appointments>
+						<intervalHeaders>
+							<unified:CalendarAppointment startDate="{PlanningModel>start}" endDate="{PlanningModel>end}" icon="{PlanningModel>pic}"
+								title="{PlanningModel>ProjName}" type="{PlanningModel>ProjectColor}"></unified:CalendarAppointment>
+						</intervalHeaders>
+					</PlanningCalendarRow>
+				</rows>
+			</PlanningCalendar>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

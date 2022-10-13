@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="createDialog" contentWidth="10%">
+		<f:SimpleForm id="sfAppointment" editable="true" layout="ResponsiveGridLayout" singleContainerFullSize="false">
+			<Label text="{i18n>person}" labelFor="selectPerson" required="true"/>
+			<ComboBox id="selectPerson" selectedKey="{NewAppointMent>/PersId}"  change="handleChangeSelect" width="100%"
+				items="{ path: 'PersonnelModel>/', length: 1000}" required="true">
+				<core:Item key="{PersonnelModel>persId}" text="{PersonnelModel>nameFirst} {PersonnelModel>nameLast}"/>
+			</ComboBox>
+			<Label text="{i18n>date}" labelFor="startDate"/>
+			<DatePicker id="startDate" dateValue="{NewAppointMent>/PlanningDate}" required="true" change="handleCreateChange"/>
+			<Label text="{i18n>time}: " labelFor="startTime" required="true"/>
+			<HBox>
+				<TimePicker id="startTime" dateValue="{NewAppointMent>/PlanningStartTime}" valueFormat="HH:mm" displayFormat="HH:mm" change="handleChange"
+					class="sapUiSmallMarginEnd" required="true" />
+				<TimePicker id="endTime" dateValue="{NewAppointMent>/PlanningEndTime}" valueFormat="HH:mm" displayFormat="HH:mm" change="handleChange" required="true"/>
+			</HBox>
+			<Label text="{i18n>repeat}" labelFor="selectProject" required="true"/>
+			<ComboBox id="selectRepeat" selectedKey="{NewAppointMent>/Repeat}" width="100%" required="true" enabled="{path: 'NewAppointMent>/PlanningId', formatter : '.formatter.editEnabled'}">
+				<items>
+					<core:Item key="1" text="1"/>
+					<core:Item key="2" text="2"/>
+					<core:Item key="3" text="3"/>
+					<core:Item key="4" text="4"/>
+					<core:Item key="5" text="5"/>
+				</items>
+			</ComboBox>
+			<Label text="{i18n>project}" labelFor="selectProject" required="true"/>
+			<ComboBox id="selectProject" selectedKey="{NewAppointMent>/ProjId}"  change="handleChangeSelect" width="100%"
+				items="{ path: 'ProjectModel>/', length: 1000}" required="true">
+				<core:Item key="{ProjectModel>projId}" text="{ProjectModel>projName}"/>
+			</ComboBox>
+			<Label text="{i18n>task}"/>
+			<Input id="idTaskId" type="Text" value="{NewAppointMent>/TaskSubject}" showValueHelp="true" valueHelpOnly="true"
+				valueHelpRequest=".onValueHelpTaskRequest"/>
+			<Label text="{i18n>location}" labelFor="selectLocation" required="true"/>
+			<ComboBox id="selectLocation" selectedKey="{NewAppointMent>/LocationId}"  change="handleChangeSelect" width="100%"
+				items="{ path: 'LocationModel>/' }" required="true">
+				<core:Item key="{LocationModel>locationId}" text="{LocationModel>locationText}"/>
+			</ComboBox>
+			<Label text="{i18n>description}" labelFor="moreInfo" required="true"/>
+			<TextArea id="moreInfo" value="{NewAppointMent>/Description}" rows="5" maxLength="255" width="100%" required="true" showExceededText="true"/>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>save}" type="Emphasized" press="onSaveAppointment"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>cancel}" press="onCancelAppointment"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

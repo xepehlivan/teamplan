@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="detailsPopover" title="{PlanningDetailModel>/name}" class="sapUiContentPadding" placement="Auto" contentWidth="20%">
+		<f:SimpleForm editable="false" layout="ResponsiveGridLayout" singleContainerFullSize="false">
+			<Label text="{i18n>project}"/>
+			<Text text="{PlanningDetailModel>/project}"/>
+			<Label text="{i18n>task}"/>
+			<Link text="{PlanningDetailModel>/taskId}-{PlanningDetailModel>/task}" press="onNavigateToActivityApp"
+				visible="{ parts : [ 'PlanningDetailModel>/taskId', 'PlanningDetailModel>/uname' ], formatter: '.formatter.taskLinkVisible' }"/>
+			<Text text="{PlanningDetailModel>/taskId}-{PlanningDetailModel>/task}"
+				visible="{ parts : [ 'PlanningDetailModel>/taskId', 'PlanningDetailModel>/uname' ], formatter: '.formatter.taskTextVisible' }"/>
+			<Label text="{i18n>location}"/>
+			<Text text="{PlanningDetailModel>/location}"/>
+			<Label text="{i18n>description}"/>
+			<Text text="{PlanningDetailModel>/description}"/>
+			<Label text="{i18n>startDateTime}" labelFor="startDateText"/>
+			<Text id="startDateText" text="{path: 'PlanningDetailModel>/start', formatter: '.formatDate'}"/>
+			<Label text="{i18n>endDateTime}" labelFor="endDateText"/>
+			<Text id="endDateText" text="{path: 'PlanningDetailModel>/end', formatter: '.formatDate'}"/>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>edit}" type="Emphasized" press="onEditAppointment" visible="{Authorization>/Edit}"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>delete}" press="onDeleteAppointment" visible="{Authorization>/Delete}"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

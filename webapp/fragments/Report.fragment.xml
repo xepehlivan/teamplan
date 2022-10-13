@@ -1,0 +1,113 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt"
+	xmlns:u="sap.ui.unified" xmlns:lab="it.designfuture.chartjs" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog id="reportDialog" title="{i18n>teamplanReport}" contentWidth="100%" contentHeight="100%" draggable="true" afterClose="onCloseHistory">
+		<content>
+			<fb:FilterBar clear="onClearReport" search="onSearchReport" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+				<fb:filterItems>
+					<fb:FilterItem name="D" label="{i18n>PlanningDate}">
+						<fb:control>
+							<DateRangeSelection id="dRPlanningDate" width="100%" required="true" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="J" label="{i18n>Project}">
+						<fb:control>
+							<MultiComboBox id="mCBoxProject" items="{ path: 'ProjectModel>/', length: 5000, sorter: { path: 'licensePlate' }}" >
+								<core:Item key="{ProjectModel>projId}" text="{ProjectModel>projName}"/>
+							</MultiComboBox>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="I" label="{i18n>Personnel}">
+						<fb:control>
+							<MultiComboBox id="mCBoxPersonnel" items="{ path: 'PersonnelModel>/', length: 5000, sorter: { path: 'licensePlate' }}">
+								<core:Item key="{PersonnelModel>persId}" text="{PersonnelModel>nameFirst} {PersonnelModel>nameLast}"/>
+							</MultiComboBox>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="T" label="{i18n>Team}">
+						<fb:control>
+							<MultiComboBox id="mCBoxTeam" items="{ path: 'TeamModel>/', length: 5000, sorter: { path: 'teamText' }}" >
+								<core:Item key="{TeamModel>teamKey}" text="{TeamModel>teamText}"/>
+							</MultiComboBox>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="U" label="{i18n>UserType}">
+						<fb:control>
+							<MultiComboBox id="mcUserType" items="{UserTypeModel>/}" >
+								<core:Item text="{UserTypeModel>name}" key="{UserTypeModel>id}"/>
+							</MultiComboBox>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="F" label="{i18n>ActiveProjects}">
+						<fb:control>
+							<CheckBox id="cBoxActiveProjects" text="{i18n>ActiveProjects}" valueState="Warning" />
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+			</fb:FilterBar>
+			<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter text="{i18n>chart}" key="chart">
+						<HBox width="100%" justifyContent="Center">
+							<html:div id="ec1" style="width:1200px;height:800px;"/>
+						</HBox>
+					</IconTabFilter>
+					<IconTabFilter text="{i18n>list}" key="list">
+						<Table items="{ReportModel>/}" growing="true" growingThreshold="100">
+							<headerToolbar>
+								<OverflowToolbar>
+									<content>
+										<ToolbarSpacer/>
+										<Button id="excelButton" icon="sap-icon://excel-attachment" press="onExportReport" tooltip="Excel" type="Transparent"/>
+									</content>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column>
+									<header>
+										<Text text="{i18n>projName}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Text text="{i18n>projTotalHour}"/>
+									</header>
+								</Column>
+								<Column >
+									<header>
+										<Text text="{i18n>nameFirst}"/>
+									</header>
+								</Column>
+								<Column >
+									<header>
+										<Text text="{i18n>nameLast}"/>
+									</header>
+								</Column>
+								<Column >
+									<header>
+										<Text text="{i18n>persTotalHour}"/>
+									</header>
+								</Column>
+								<Column >
+									<header>
+										<Text text="{i18n>teamText}"/>
+									</header>
+								</Column>
+							</columns>
+							<ColumnListItem vAlign="Middle">
+								<ObjectIdentifier title="{ReportModel>projName}"/>
+								<Text text="{ReportModel>projTotalHour}"/>
+								<Text text="{ReportModel>nameFirst}"/>
+								<Text text="{ReportModel>nameLast}"/>
+								<Text text="{ReportModel>persTotalHour}"/>
+								<Text text="{ReportModel>teamText}"/>
+							</ColumnListItem>
+						</Table>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</content>
+		<buttons>
+			<Button text="{i18n>close}" press="onCloseReport" type="Reject"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
